@@ -1,0 +1,35 @@
+version: "3.3"
+
+services:
+  influxdb:
+    image: influxdb:1.8.0
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    network_mode: "host" # this is only required when testing locally
+    restart: always
+    environment:
+      INFLUXDB_HTTP_AUTH_ENABLED: "false"
+      INFLUX_DB_INIT_MODE: "setup"
+      INFLUXDB_ADMIN_USER: "influxDBuser"
+      INFLUXDB_ADMIN_PASSWORD: "influxDBpass"
+      INFLUXDB_DB: "data"
+  backend:
+    restart: always
+    build: ./influx-rest-api
+    command: npm start
+    ports:
+      - 3000:3000
+    network_mode: "host" # this is only required when testing locally
+    container_name: rest_api
+    depends_on:
+      - influxdb
+      - mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes: 
+        - ./mosquitto:/mosquitto/config
+    network_mode: "host" # this is only required when testing locally

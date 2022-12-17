@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  mqtt_client:
+      ports:
+        - 9500:9500
+      build: .
+      container_name: mqtt_client
+      restart: always
+      network_mode: "host" # this is only required when testing locally
