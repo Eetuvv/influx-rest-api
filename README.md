@@ -1,23 +1,22 @@
-# Backend information
-
-## Running docker containers
-
-The backend can be started with the command <pre> docker-compose up</pre>
-
-### The docker containers that are started through docker-compose are hosted at this address http://139.59.205.221
-
-## Accessing API
-
-API can be accessed from this URL http://139.59.205.221:3000/
+# Description
+This my part of a group project for IoT course (2022). 
 <br>
-More detailed instructions on how to use the API can be found from the above URL.
 <br>
-<b> Note: adding new devices is not supported. Use device id 1 in the requests.</b>
+The idea of the project was to collect data from a plant using sensortag, then send it through MQTT broker to backend, which stores the data and exposes it through REST API. Frontend application would then get the data from the API through HTTP requests. User could see different measurements about the plant, including temperature, humidity and light. User could also trigger the light state to control how much light the plant is getting.
+
+<br>
+This part of the project sets up a MQTT broker that listens to incoming measurements and light state, and forwards the data to backend server through a MQTT client. The server stores the data to InfluxDB and exposes it through a REST API.
+<br/>
+<br/>
+The project is containerized and there is a separate docker-compose file for starting the backend (InfluxDB, REST API, MQTT broker) and a separate one for the MQTT client.
+These can be started with the command:
+
+```
+docker-compose up
+```
+
 
 ## MQTT
-
-MQTT broker is also hosted at the same IP address.
-<br>
 
 ### Mosquitto
 
@@ -27,9 +26,9 @@ Mosquitto can be installed and started with:
 sudo systemctl start mosquitto
 </pre>
 <br>
-Connecting to broker with MQTT client: <pre>mosquitto_sub -h 139.59.205.221 -t <b>your-topic-here</b></pre>
+Connecting to broker with MQTT client: <pre>mosquitto_sub -h &ltbroker ip&gt -t <b>your-topic-here</b></pre>
 Sending a message:
-<pre>mosquitto_pub -h 139.59.205.221 -t <b>your-topic-here</b> -m <b>your-message-here</b></pre>
+<pre>mosquitto_pub -h &ltbroker ip&gt -t <b>your-topic-here</b> -m <b>your-message-here</b></pre>
 <br>
 
 ### MQTT message formats
